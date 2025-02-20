@@ -9,8 +9,10 @@ env_path = get_env_path()
 load_dotenv(dotenv_path=env_path)
 
 if getenv("OPENAI_API_KEY"):
-    client = OpenAI(api_key=getenv("OPENAI_API_KEY"))
-    model = "gpt-4o"  # "gpt-4o-mini" for cheaper model
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=getenv("OPENAI_API_KEY"))
+    model = "cognitivecomputations/dolphin3.0-r1-mistral-24b:free"  # "gpt-4o-mini" for cheaper model
 elif getenv("GROQ_API_KEY"):
     client = AsyncGroq(api_key=getenv("GROQ_API_KEY"))
     model = "deepseek-r1-distill-qwen-32b"
