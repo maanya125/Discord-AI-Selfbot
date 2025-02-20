@@ -8,17 +8,10 @@ import sys
 import server
 import threading
 
-from utils.helpers import clear_console, resource_path, get_env_path
+from utils.helpers import clear_console, resource_path
 
 
-def check_env():
-    env_path = resource_path("config/.env")
-    if not os.path.exists(env_path):
-        print("config/.env not found! Running setup...")
-        import utils.setup as setup
 
-
-check_env()
 
 from dotenv import load_dotenv
 from discord.ext import commands
