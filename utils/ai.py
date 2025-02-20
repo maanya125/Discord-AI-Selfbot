@@ -13,7 +13,7 @@ if getenv("OPENAI_API_KEY"):
     model = "gpt-4o"  # "gpt-4o-mini" for cheaper model
 elif getenv("GROQ_API_KEY"):
     client = AsyncGroq(api_key=getenv("GROQ_API_KEY"))
-    model = "llama3-70b-8192"
+    model = "deepseek-r1-distill-qwen-32b"
 else:
     print("No API keys found, exiting.")
     exit(1)
