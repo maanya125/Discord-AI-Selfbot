@@ -20,10 +20,6 @@ from utils.split_response import split_response
 from colorama import init, Fore, Style
 from datetime import datetime
 
-
-env_path = get_env_path()
-
-load_dotenv(dotenv_path=env_path)
 init()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
