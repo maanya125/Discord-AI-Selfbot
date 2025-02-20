@@ -1,4 +1,6 @@
 discord.py-self
+Flask==3.0.0
+gunicorn==21.2.0
 colorama
 curl_cffi
 httpx
