@@ -5,6 +5,8 @@ import shutil
 import re
 import random
 import sys
+import server
+import threading
 
 from utils.helpers import clear_console, resource_path, get_env_path
 
@@ -310,4 +312,5 @@ async def load_extensions():
 
 
 if __name__ == "__main__":
+    threading.Thread(target=server.app.run, kwargs={"host": "0.0.0.0", "port": 10000}).start()
     bot.run(TOKEN, log_handler=None)
