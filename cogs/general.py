@@ -71,47 +71,47 @@ https://github.com/Najmul190/Discord-AI-Selfbot```
 
     @commands.command(name="summarize", description="Summarize the last n messages in the channel")
     async def summarize(self, ctx, limit: int = 200):
-    temp = await ctx.send(f"Summarizing the last {limit} messages...")
-
-    # Fetch messages from the channel
-    messages = [msg async for msg in ctx.channel.history(limit=limit)]
+        temp = await ctx.send(f"Summarizing the last {limit} messages...")
     
-    # Format messages with usernames
-    messages_content = "\n".join([f"{msg.author.display_name}: {msg.content}" for msg in messages if msg.content])
-
-    if not messages_content:
-        await temp.edit(content="No messages to summarize.")
-        return
-
-    # Prepare prompt for Groq API
-    prompt = (
-        "Summarize the following Discord conversation, ensuring that key statements are attributed to the users who said them:\n"
-        f"{messages_content}\n"
-        "Provide a structured and concise summary."
-    )
-
-    async def generate_summary():
-        try:
-            response = groq_client.chat.completions.create(
-                messages=[{"role": "user", "content": prompt}],
-                model="llama3-8b-8192",
-            )
-
-            summary = response.choices[0].message.content.strip()
-
-            await temp.delete()
-            if len(summary) > 2000:  # Discord message limit
-                chunks = split_response(summary)
-                for chunk in chunks:
-                    await ctx.send(chunk)
-            else:
-                await ctx.send(f"**Summary:**\n{summary}")
-
-        except Exception as e:
-            await temp.edit(content=f"Error generating summary: {str(e)}")
-
-    async with ctx.channel.typing():
-        asyncio.create_task(generate_summary())
+        # Fetch messages from the channel
+        messages = [msg async for msg in ctx.channel.history(limit=limit)]
+        
+        # Format messages with usernames
+        messages_content = "\n".join([f"{msg.author.display_name}: {msg.content}" for msg in messages if msg.content])
+    
+        if not messages_content:
+            await temp.edit(content="No messages to summarize.")
+            return
+    
+        # Prepare prompt for Groq API
+        prompt = (
+            "Summarize the following Discord conversation, ensuring that key statements are attributed to the users who said them:\n"
+            f"{messages_content}\n"
+            "Provide a structured and concise summary."
+        )
+    
+        async def generate_summary():
+            try:
+                response = groq_client.chat.completions.create(
+                    messages=[{"role": "user", "content": prompt}],
+                    model="llama3-8b-8192",
+                )
+    
+                summary = response.choices[0].message.content.strip()
+    
+                await temp.delete()
+                if len(summary) > 2000:  # Discord message limit
+                    chunks = split_response(summary)
+                    for chunk in chunks:
+                        await ctx.send(chunk)
+                else:
+                    await ctx.send(f"**Summary:**\n{summary}")
+    
+            except Exception as e:
+                await temp.edit(content=f"Error generating summary: {str(e)}")
+    
+        async with ctx.channel.typing():
+            asyncio.create_task(generate_summary())
 
 async def setup(bot):
     await bot.add_cog(General(bot))
