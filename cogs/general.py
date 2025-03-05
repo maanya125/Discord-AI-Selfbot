@@ -4,7 +4,27 @@ import asyncio
 from discord.ext import commands
 from utils.ai import generate_response
 from utils.split_response import split_response
+from groq import AsyncGroq
+from openai import AsyncOpenAI as OpenAI
+from os import getenv
+from dotenv import load_dotenv
+from sys import exit
+from utils.helpers import get_env_path
 
+env_path = get_env_path()
+load_dotenv(dotenv_path=env_path)
+
+if getenv("OPENAI_API_KEY"):
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=getenv("OPENAI_API_KEY"))
+    model = "mistralai/mistral-small-24b-instruct-2501:free"  # "gpt-4o-mini" for cheaper model
+elif getenv("GROQ_API_KEY"):
+    groq_client = AsyncGroq(api_key=getenv("GROQ_API_KEY"))
+    model = "llama3-70b-8192"
+else:
+    print("No API keys found, exiting.")
+    exit(1)
 
 class General(commands.Cog):
     def __init__(self, bot):
