@@ -112,7 +112,7 @@ https://github.com/Najmul190/Discord-AI-Selfbot```
     
         async def generate_summary():
             try:
-                response = groq_client.chat.completions.create(
+                response = await groq_client.chat.completions.create(
                     messages=[{"role": "user", "content": prompt}],
                     model="llama3-8b-8192",
                 )
